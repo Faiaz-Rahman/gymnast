@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   custom: {
-    marginTop: 30,
+    marginTop: 50,
   },
   logo: {
     height: 400,

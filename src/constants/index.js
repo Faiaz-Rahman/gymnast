@@ -11,4 +11,5 @@ export const COLORS = {
   primary: '#f02c20',
   lemon: '#fff44f',
   slate: '#D6DFE0',
+  basic: '#d8136b',
 };

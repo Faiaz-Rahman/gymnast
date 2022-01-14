@@ -14,6 +14,8 @@ import CalendarPicker from 'react-native-calendar-picker';
 import {Formik} from 'formik';
 import * as yup from 'yup';
 
+import CheckBox from '@react-native-community/checkbox';
+
 import CustomInput from '../components/CustomInput';
 
 import {COLORS, DIM} from '../constants';
@@ -37,6 +39,9 @@ export default function CustomerRegistration() {
   });
 
   const [calOpen, setCalOpen] = useState(false);
+  const [gym, setGym] = useState(false);
+  const [pool, setPool] = useState(false);
+
   return (
     <>
       {calOpen && (
@@ -101,6 +106,8 @@ export default function CustomerRegistration() {
             confPass: '',
             phone: '',
             address: '',
+            height: '',
+            weight: '',
           }}
           validationSchema={validationSchema}
           onSubmit={values => console.log(values)}>
@@ -139,6 +146,19 @@ export default function CustomerRegistration() {
                   <Text style={styles.text}>{selectedDate}</Text>
                 </View>
               </TouchableWithoutFeedback>
+              {selectedDate === 'Date of Birth' && touched.name && (
+                <View>
+                  <Text
+                    style={{
+                      color: COLORS.primary,
+                      fontSize: 15,
+                      fontWeight: '600',
+                      paddingBottom: 10,
+                    }}>
+                    {'Date of birth is mandatory !'}
+                  </Text>
+                </View>
+              )}
               <CustomInput
                 text="Enter the Email"
                 iconName="mail"
@@ -221,7 +241,7 @@ export default function CustomerRegistration() {
               <CustomInput
                 text="Enter your Address"
                 iconName="location-sharp"
-                customStyle={{marginBottom: 15}}
+                customStyle={styles.custom}
                 onChangeText={handleChange('address')}
               />
               {errors.address && touched.address && (
@@ -237,6 +257,73 @@ export default function CustomerRegistration() {
                   </Text>
                 </View>
               )}
+              <CustomInput
+                text="Your height"
+                iconName="md-man"
+                customStyle={styles.custom}
+                onChangeText={handleChange('height')}
+              />
+              <CustomInput
+                text="Your weight(in kgs)"
+                iconName="medical"
+                customStyle={styles.custom}
+                onChangeText={handleChange('weight')}
+              />
+              <View
+                style={{
+                  height: DIM.height * 0.05,
+                  width: DIM.width,
+                  // backgroundColor: 'red',
+                  paddingLeft: DIM.width * 0.1,
+                }}>
+                <Text
+                  style={{
+                    fontSize: 18,
+                    color: 'slategrey',
+                    letterSpacing: 2,
+                  }}>
+                  Any active membership?
+                </Text>
+              </View>
+              <View style={styles.checkBoxContainer}>
+                <MaterialCommunityIcons
+                  name="dumbbell"
+                  size={30}
+                  color={'grey'}
+                  style={styles.icon}
+                />
+                <Text
+                  style={{
+                    fontSize: 20,
+                    color: 'grey',
+                  }}>
+                  Gym?
+                </Text>
+                <CheckBox
+                  disabled={false}
+                  value={gym}
+                  onValueChange={newvalue => setGym(newvalue)}
+                  style={{
+                    marginLeft: 10,
+                  }}
+                />
+                <Text
+                  style={{
+                    fontSize: 20,
+                    color: 'grey',
+                    marginLeft: 60,
+                  }}>
+                  Pool?
+                </Text>
+                <CheckBox
+                  disabled={false}
+                  onValueChange={newvalue => setPool(newvalue)}
+                  value={pool}
+                  style={{
+                    marginLeft: 10,
+                  }}
+                />
+              </View>
               <Buttons
                 text={'REGISTER'}
                 inAppIcon={'account-plus'}
@@ -267,6 +354,16 @@ const styles = StyleSheet.create({
   },
   custom: {
     marginBottom: 10,
+  },
+  checkBoxContainer: {
+    flexDirection: 'row',
+    height: DIM.height * 0.1,
+    width: DIM.width * 0.85,
+    alignItems: 'center',
+    backgroundColor: COLORS.slate,
+    borderRadius: 15,
+    paddingLeft: 20,
+    marginBottom: 20,
   },
   icon: {
     marginRight: 18,

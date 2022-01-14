@@ -6,6 +6,7 @@ import GetStarted from '../screens/GetStarted';
 import MenuScreen from '../screens/MenuScreen';
 import RegisterMenu from '../screens/RegisterMenu';
 import CustomerRegistration from '../screens/CustomerRegistration';
+import OwnerRegistration from '../screens/OwnerRegistration';
 
 const Stack = createNativeStackNavigator();
 
@@ -38,6 +39,14 @@ const LoginNavigator = () => {
       <Stack.Screen
         name="customerReg"
         component={CustomerRegistration}
+        options={{
+          headerShown: false,
+          animation: 'slide_from_right',
+        }}
+      />
+      <Stack.Screen
+        name="ownerReg"
+        component={OwnerRegistration}
         options={{
           headerShown: false,
           animation: 'slide_from_right',

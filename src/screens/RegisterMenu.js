@@ -29,6 +29,7 @@ export default function RegisterMenu({navigation}) {
         style={styles.custom}
         iconName="angle-right"
         letterSpacing={4}
+        onPress={() => navigation.navigate('ownerReg')}
       />
     </View>
   );
