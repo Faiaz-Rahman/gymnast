@@ -1,5 +1,11 @@
 import React, {useState} from 'react';
-import {StyleSheet, TextInput, TouchableOpacity, View} from 'react-native';
+import {
+  StyleSheet,
+  TextInput,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {COLORS, DIM} from '../constants';
