@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "83724908492",
+    "project_id": "gymnast-aea96",
+    "storage_bucket": "gymnast-aea96.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:83724908492:android:758bf24a7c5c2b5478cf69",
+        "android_client_info": {
+          "package_name": "com.gymnast"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "83724908492-hhlr7o0np24k7i2tosph8gi9405bs2bj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-YDrpxat8AMLL2LS4iRi-ECFGkqjxYqs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "83724908492-hhlr7o0np24k7i2tosph8gi9405bs2bj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
