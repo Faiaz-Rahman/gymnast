@@ -19,7 +19,6 @@ import {COLORS, DIM} from '../constants';
 import CustomInput from '../components/CustomInput';
 import Buttons from '../components/Buttons';
 import ErrorComponent from '../components/ErrorComponent';
-import CustomInputBox from '../components/CustomInputBox';
 
 export default function OwnerRegistration() {
   const validationSchema = yup.object().shape({
@@ -393,7 +392,6 @@ const styles = StyleSheet.create({
     fontSize: 19,
   },
   daysPicker: {
-    // backgroundColor: 'red',
     flexDirection: 'row',
     paddingRight: 20,
     justifyContent: 'space-between',
