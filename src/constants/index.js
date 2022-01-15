@@ -13,3 +13,5 @@ export const COLORS = {
   slate: '#D6DFE0',
   basic: '#d8136b',
 };
+
+export const IMAGEURI = require('../assets/camera.png');

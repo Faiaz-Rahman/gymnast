@@ -134,6 +134,7 @@ android {
 
     defaultConfig {
         applicationId "com.gymnast"
+        vectorDrawables.useSupportLibrary = true
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

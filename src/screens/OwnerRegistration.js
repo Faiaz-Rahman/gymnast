@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -7,14 +7,19 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import {COLORS, DIM} from '../constants';
 
-import Ionicons from 'react-native-vector-icons/Ionicons';
-
+import ImagePicker from 'react-native-image-crop-picker';
 import {Formik} from 'formik';
 import * as yup from 'yup';
+
+import CheckBox from '@react-native-community/checkbox';
+
+import {COLORS, DIM} from '../constants';
+
 import CustomInput from '../components/CustomInput';
 import Buttons from '../components/Buttons';
+import ErrorComponent from '../components/ErrorComponent';
+import CustomInputBox from '../components/CustomInputBox';
 
 export default function OwnerRegistration() {
   const validationSchema = yup.object().shape({
@@ -27,17 +32,58 @@ export default function OwnerRegistration() {
     confPass: yup
       .string()
       .oneOf([yup.ref('pass'), null], 'Passwords not match !'),
+    state: yup.string(),
+    city: yup.string(),
     address: yup.string().required('Address is mandatory !'),
     szPool: yup.string().required('Pool Measurement is mandatory !'),
     len: yup.string().required('Length of Pool is mandatory !'),
     brdth: yup.string().required('Breadth of Pool is mandatory !'),
-    depthPool: yup.string().required('Depth of Pool is mandatory !'),
-    image: yup.string().required('Upload an image !'),
-    fees: yup.string().required('Mention fees'),
     mob: yup.string().required('Mobile number is mandatory !'),
     pan: yup.string().required('Provide the PAN number !'),
     gst: yup.string().required('Provide the GST number !'),
   });
+
+  const [image, setImage] = useState(null);
+  const [sat, setSat] = useState(false);
+  const [sun, setSun] = useState(false);
+  const [mon, setMon] = useState(false);
+  const [tue, setTue] = useState(false);
+  const [wed, setWed] = useState(false);
+  const [thu, setThu] = useState(false);
+  const [fri, setFri] = useState(false);
+
+  const [imagePickerOpened, setImagePickerOpened] = useState(false);
+
+  const selectedDays = [];
+
+  const [daysError, setDaysError] = useState(false);
+
+  const addDaysToArray = () => {
+    if (sat) selectedDays.push('sat');
+    if (sun) selectedDays.push('sun');
+    if (mon) selectedDays.push('mon');
+    if (tue) selectedDays.push('tue');
+    if (wed) selectedDays.push('wed');
+    if (thu) selectedDays.push('thu');
+    if (fri) selectedDays.push('fri');
+  };
+
+  const chooseImageFromLibrary = () => {
+    setImagePickerOpened(true);
+
+    ImagePicker.openPicker({
+      width: 300,
+      height: 400,
+      cropping: true,
+    })
+      .then(image => {
+        const imageUri = image.path;
+        setImage(imageUri);
+      })
+      .catch(() => {
+        setImage(null);
+      });
+  };
 
   return (
     <ScrollView
@@ -72,17 +118,13 @@ export default function OwnerRegistration() {
           szPool: '',
           len: '',
           brdth: '',
-          depthPool: '',
-          image: '',
-          days: '',
-          timing: '',
-          fees: '',
           mob: '',
           pan: '',
           gst: '',
         }}
-        validationSchema={validationSchema}>
-        {({handleSubmit, handleChange, values, touched, errors}) => (
+        validationSchema={validationSchema}
+        onSubmit={values => console.log(values)}>
+        {({handleSubmit, handleChange, touched, errors}) => (
           <>
             <CustomInput
               text="Enter your Name"
@@ -91,18 +133,9 @@ export default function OwnerRegistration() {
               onChangeText={handleChange('name')}
             />
             {errors.name && touched.name && (
-              <View>
-                <Text
-                  style={{
-                    color: COLORS.primary,
-                    fontSize: 15,
-                    fontWeight: '600',
-                    paddingBottom: 10,
-                  }}>
-                  {errors.name}
-                </Text>
-              </View>
+              <ErrorComponent error={errors.name} />
             )}
+
             <CustomInput
               text="Enter your Address"
               iconName="location-sharp"
@@ -110,18 +143,9 @@ export default function OwnerRegistration() {
               onChangeText={handleChange('address')}
             />
             {errors.address && touched.address && (
-              <View>
-                <Text
-                  style={{
-                    color: COLORS.primary,
-                    fontSize: 15,
-                    fontWeight: '600',
-                    paddingBottom: 10,
-                  }}>
-                  {errors.address}
-                </Text>
-              </View>
+              <ErrorComponent error={errors.address} />
             )}
+
             <CustomInput
               text="Enter your State"
               iconName="pin-sharp"
@@ -129,18 +153,9 @@ export default function OwnerRegistration() {
               onChangeText={handleChange('state')}
             />
             {errors.state && touched.state && (
-              <View>
-                <Text
-                  style={{
-                    color: COLORS.primary,
-                    fontSize: 15,
-                    fontWeight: '600',
-                    paddingBottom: 10,
-                  }}>
-                  {errors.state}
-                </Text>
-              </View>
+              <ErrorComponent error={errors.state} />
             )}
+
             <CustomInput
               text="Enter your City"
               iconName="md-pin"
@@ -148,18 +163,9 @@ export default function OwnerRegistration() {
               onChangeText={handleChange('city')}
             />
             {errors.city && touched.city && (
-              <View>
-                <Text
-                  style={{
-                    color: COLORS.primary,
-                    fontSize: 15,
-                    fontWeight: '600',
-                    paddingBottom: 10,
-                  }}>
-                  {errors.city}
-                </Text>
-              </View>
+              <ErrorComponent error={errors.city} />
             )}
+
             <CustomInput
               text="Enter Email address"
               iconName="mail"
@@ -167,17 +173,7 @@ export default function OwnerRegistration() {
               onChangeText={handleChange('email')}
             />
             {errors.email && touched.email && (
-              <View>
-                <Text
-                  style={{
-                    color: COLORS.primary,
-                    fontSize: 15,
-                    fontWeight: '600',
-                    paddingBottom: 10,
-                  }}>
-                  {errors.email}
-                </Text>
-              </View>
+              <ErrorComponent error={errors.email} />
             )}
 
             <CustomInput
@@ -188,17 +184,7 @@ export default function OwnerRegistration() {
               passEntry
             />
             {errors.pass && touched.pass && (
-              <View>
-                <Text
-                  style={{
-                    color: COLORS.primary,
-                    fontSize: 15,
-                    fontWeight: '600',
-                    paddingBottom: 10,
-                  }}>
-                  {errors.pass}
-                </Text>
-              </View>
+              <ErrorComponent error={errors.pass} />
             )}
 
             <CustomInput
@@ -209,17 +195,7 @@ export default function OwnerRegistration() {
               passEntry
             />
             {errors.confPass && touched.confPass && (
-              <View>
-                <Text
-                  style={{
-                    color: COLORS.primary,
-                    fontSize: 15,
-                    fontWeight: '600',
-                    paddingBottom: 10,
-                  }}>
-                  {errors.confPass}
-                </Text>
-              </View>
+              <ErrorComponent error={errors.confPass} />
             )}
 
             <CustomInput
@@ -229,17 +205,7 @@ export default function OwnerRegistration() {
               onChangeText={handleChange('szPool')}
             />
             {errors.szPool && touched.szPool && (
-              <View>
-                <Text
-                  style={{
-                    color: COLORS.primary,
-                    fontSize: 15,
-                    fontWeight: '600',
-                    paddingBottom: 10,
-                  }}>
-                  {errors.szPool}
-                </Text>
-              </View>
+              <ErrorComponent error={errors.szPool} />
             )}
 
             <CustomInput
@@ -248,19 +214,7 @@ export default function OwnerRegistration() {
               customStyle={styles.custom}
               onChangeText={handleChange('len')}
             />
-            {errors.len && touched.len && (
-              <View>
-                <Text
-                  style={{
-                    color: COLORS.primary,
-                    fontSize: 15,
-                    fontWeight: '600',
-                    paddingBottom: 10,
-                  }}>
-                  {errors.len}
-                </Text>
-              </View>
-            )}
+            {errors.len && touched.len && <ErrorComponent error={errors.len} />}
 
             <CustomInput
               text="Breadth of Pool"
@@ -269,113 +223,153 @@ export default function OwnerRegistration() {
               onChangeText={handleChange('brdth')}
             />
             {errors.brdth && touched.brdth && (
-              <View>
-                <Text
-                  style={{
-                    color: COLORS.primary,
-                    fontSize: 15,
-                    fontWeight: '600',
-                    paddingBottom: 10,
-                  }}>
-                  {errors.brdth}
-                </Text>
-              </View>
+              <ErrorComponent error={errors.brdth} />
             )}
-            <View>
-              <View style={styles.textContainer}>
-                <Ionicons
-                  name="image"
-                  size={33}
-                  color={'grey'}
-                  style={styles.icon}
-                />
-                <Text style={styles.text}>Choose an image</Text>
-                <TouchableOpacity
-                  style={{
-                    marginLeft: 30,
-                    height: DIM.height * 0.05,
-                    width: DIM.width * 0.2,
-                    backgroundColor: COLORS.basic,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    borderRadius: 14,
-                    elevation: 5,
-                  }}>
-                  <Text
-                    style={{
-                      color: COLORS.white,
-                      fontSize: 16,
-                      fontWeight: '700',
-                    }}>
-                    Upload
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
+
             <CustomInput
               text="Enter phone number"
               iconName="call"
               customStyle={styles.custom}
-              onChangeText={handleChange('call')}
+              onChangeText={handleChange('mob')}
               keyboardType="numeric"
             />
-            {errors.call && touched.call && (
-              <View>
-                <Text
-                  style={{
-                    color: COLORS.primary,
-                    fontSize: 15,
-                    fontWeight: '600',
-                    paddingBottom: 10,
-                  }}>
-                  {errors.call}
-                </Text>
-              </View>
-            )}
+            {errors.mob && touched.mob && <ErrorComponent error={errors.mob} />}
+
             <CustomInput
               text="Enter PAN number"
               iconName="md-alert"
               customStyle={styles.custom}
               onChangeText={handleChange('pan')}
             />
-            {errors.pan && touched.pan && (
-              <View>
-                <Text
-                  style={{
-                    color: COLORS.primary,
-                    fontSize: 15,
-                    fontWeight: '600',
-                    paddingBottom: 10,
-                  }}>
-                  {errors.pan}
-                </Text>
-              </View>
-            )}
+            {errors.pan && touched.pan && <ErrorComponent error={errors.pan} />}
 
             <CustomInput
               text="Enter GST number"
               iconName="md-alert"
-              customStyle={{marginBottom: 25}}
+              customStyle={styles.custom}
               onChangeText={handleChange('gst')}
             />
-            {errors.gst && touched.gst && (
-              <View>
-                <Text
-                  style={{
-                    color: COLORS.primary,
-                    fontSize: 15,
-                    fontWeight: '600',
-                    paddingBottom: 10,
-                  }}>
-                  {errors.gst}
-                </Text>
+            {errors.gst && touched.gst && <ErrorComponent error={errors.gst} />}
+
+            <View style={styles.imagePickerContainer}>
+              <TouchableOpacity
+                onPress={chooseImageFromLibrary}
+                style={styles.imagePickerStyle}>
+                <Image
+                  source={
+                    image === null
+                      ? require('../assets/camera.png')
+                      : {uri: image}
+                  }
+                  style={styles.imagePickerImage}
+                />
+              </TouchableOpacity>
+              <View style={styles.uploadImageContainer}>
+                <Text style={styles.uploadImageText}>Upload an Image</Text>
               </View>
+            </View>
+            {image === null && imagePickerOpened && (
+              <ErrorComponent error="You must upload an image !" />
             )}
+            <View style={styles.selectDaysContainer}>
+              <Text style={styles.selectDaysText}>Select Days</Text>
+              <View style={styles.daysPicker}>
+                <View style={{}}>
+                  <Text style={styles.dayText}>Sat</Text>
+                  <CheckBox
+                    disabled={false}
+                    onValueChange={newvalue => {
+                      setSat(newvalue);
+                    }}
+                    value={sat}
+                    tintColors={{true: COLORS.primary, false: COLORS.basic}}
+                  />
+                </View>
+                <View>
+                  <Text style={styles.dayText}>Sun</Text>
+                  <CheckBox
+                    disabled={false}
+                    onValueChange={newvalue => {
+                      setSun(newvalue);
+                    }}
+                    value={sun}
+                    tintColors={{true: COLORS.primary, false: COLORS.basic}}
+                  />
+                </View>
+                <View>
+                  <Text style={styles.dayText}>Mon</Text>
+                  <CheckBox
+                    disabled={false}
+                    onValueChange={newvalue => {
+                      setMon(newvalue);
+                    }}
+                    value={mon}
+                    tintColors={{true: COLORS.primary, false: COLORS.basic}}
+                  />
+                </View>
+                <View>
+                  <Text style={styles.dayText}>Tue</Text>
+                  <CheckBox
+                    disabled={false}
+                    onValueChange={newvalue => {
+                      setTue(newvalue);
+                    }}
+                    value={tue}
+                    tintColors={{true: COLORS.primary, false: COLORS.basic}}
+                  />
+                </View>
+                <View>
+                  <Text style={styles.dayText}>Wed</Text>
+                  <CheckBox
+                    disabled={false}
+                    onValueChange={newvalue => {
+                      setWed(newvalue);
+                    }}
+                    value={wed}
+                    tintColors={{true: COLORS.primary, false: COLORS.basic}}
+                    ontintColor={COLORS.primary}
+                  />
+                </View>
+                <View>
+                  <Text style={styles.dayText}>Thu</Text>
+                  <CheckBox
+                    disabled={false}
+                    onValueChange={newvalue => {
+                      setThu(newvalue);
+                    }}
+                    value={thu}
+                    tintColors={{true: COLORS.primary, false: COLORS.basic}}
+                  />
+                </View>
+                <View>
+                  <Text style={styles.dayText}>Fri</Text>
+                  <CheckBox
+                    disabled={false}
+                    onValueChange={newvalue => {
+                      setFri(newvalue);
+                    }}
+                    value={fri}
+                    tintColors={{true: COLORS.primary, false: COLORS.basic}}
+                  />
+                </View>
+              </View>
+            </View>
+            {daysError && <ErrorComponent error="You need to select days !" />}
+
             <Buttons
               text={'REGISTER'}
               inAppIcon={'account-plus'}
               iconName="angle-right"
-              onPress={handleSubmit}
+              onPress={() => {
+                addDaysToArray();
+                if (!selectedDays.length) {
+                  setDaysError(true);
+                }
+                if (!imagePickerOpened) {
+                  setImagePickerOpened(true);
+                }
+                handleSubmit();
+              }}
             />
           </>
         )}
@@ -394,6 +388,34 @@ const styles = StyleSheet.create({
   custom: {
     marginBottom: 10,
   },
+  dayText: {
+    fontWeight: '900',
+    fontSize: 19,
+  },
+  daysPicker: {
+    // backgroundColor: 'red',
+    flexDirection: 'row',
+    paddingRight: 20,
+    justifyContent: 'space-between',
+  },
+  imagePickerContainer: {
+    flexDirection: 'row',
+    marginLeft: DIM.width * 0.1,
+    marginBottom: 15,
+  },
+  imagePickerImage: {
+    height: '90%',
+    width: '90%',
+  },
+  imagePickerStyle: {
+    height: 150,
+    width: DIM.width * 0.4,
+    alignSelf: 'flex-start',
+    borderRadius: 10,
+    backgroundColor: COLORS.slate,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   logo: {
     height: 400,
     width: 400,
@@ -407,6 +429,29 @@ const styles = StyleSheet.create({
     elevation: 15,
     borderRadius: 26,
   },
+  selectDaysContainer: {
+    width: DIM.width,
+    height: DIM.height * 0.15,
+    // backgroundColor: 'tomato',
+    paddingLeft: DIM.width * 0.07,
+    paddingTop: DIM.height * 0.01,
+  },
+  selectDaysText: {
+    fontWeight: '900',
+    fontSize: 20,
+    letterSpacing: 2,
+    // fontStyle: 'italic',
+    color: 'slategrey',
+  },
+  text: {
+    fontSize: 17,
+    fontWeight: '600',
+    fontStyle: 'italic',
+    letterSpacing: 1.5,
+    opacity: 0.9,
+    color: 'grey',
+    marginLeft: 15,
+  },
   textContainer: {
     flexDirection: 'row',
     height: DIM.height * 0.1,
@@ -417,13 +462,17 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     marginBottom: 10,
   },
-  text: {
+  uploadImageContainer: {
+    height: 150,
+    width: DIM.width * 0.55,
+    justifyContent: 'center',
+  },
+  uploadImageText: {
+    marginLeft: DIM.width * 0.06,
     fontSize: 17,
     fontWeight: '600',
+    letterSpacing: 1.2,
+    color: 'slategrey',
     fontStyle: 'italic',
-    letterSpacing: 1.5,
-    opacity: 0.9,
-    color: 'grey',
-    marginLeft: 15,
   },
 });

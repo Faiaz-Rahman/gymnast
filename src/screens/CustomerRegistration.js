@@ -111,7 +111,7 @@ export default function CustomerRegistration() {
           }}
           validationSchema={validationSchema}
           onSubmit={values => console.log(values)}>
-          {({handleSubmit, handleChange, errors, values, touched}) => (
+          {({handleSubmit, handleChange, errors, touched}) => (
             <>
               <CustomInput
                 text="Enter your Name"
