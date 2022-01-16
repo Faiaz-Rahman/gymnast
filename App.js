@@ -1,17 +1,9 @@
-import {NavigationContainer} from '@react-navigation/native';
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
 
-import LoginNavigator from './src/navigation/LoginNavigator';
+import Providers from './src/navigation';
 
 const App = () => {
-  return (
-    <NavigationContainer>
-      <LoginNavigator />
-    </NavigationContainer>
-  );
+  return <Providers />;
 };
-
-const styles = StyleSheet.create({});
 
 export default App;

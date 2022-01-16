@@ -1,18 +1,44 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+
+import AsyncStorage from '@react-native-community/async-storage';
 
 import GetStarted from '../screens/GetStarted';
 import MenuScreen from '../screens/MenuScreen';
 import RegisterMenu from '../screens/RegisterMenu';
 import CustomerRegistration from '../screens/CustomerRegistration';
 import OwnerRegistration from '../screens/OwnerRegistration';
+import LoginScreen from '../screens/LoginScreen';
 
 const Stack = createNativeStackNavigator();
 
 const LoginNavigator = () => {
+  const [isFirstLaunch, setIsFirstLaunch] = useState(null);
+
+  let routename;
+
+  useEffect(() => {
+    AsyncStorage.getItem('alreadyLaunched').then(value => {
+      if (value == null) {
+        AsyncStorage.setItem('alreadyLaunched', 'true');
+        setIsFirstLaunch(true);
+      } else {
+        setIsFirstLaunch(false);
+      }
+    });
+  }, []);
+
+  if (isFirstLaunch === null) {
+    return null;
+  } else if (isFirstLaunch === true) {
+    routename = 'gettingStarted';
+  } else {
+    routename = 'menuScreen';
+  }
+
   return (
-    <Stack.Navigator initialRouteName="gettingStarted">
+    <Stack.Navigator initialRouteName={routename}>
       <Stack.Screen
         name="gettingStarted"
         component={GetStarted}
@@ -28,6 +54,16 @@ const LoginNavigator = () => {
           animation: 'slide_from_right',
         }}
       />
+
+      <Stack.Screen
+        name="login"
+        component={LoginScreen}
+        options={{
+          headerShown: false,
+          animation: 'fade',
+        }}
+      />
+
       <Stack.Screen
         name="registerMenu"
         component={RegisterMenu}

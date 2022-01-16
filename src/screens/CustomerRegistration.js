@@ -17,6 +17,7 @@ import * as yup from 'yup';
 import CheckBox from '@react-native-community/checkbox';
 
 import CustomInput from '../components/CustomInput';
+import Logo from '../components/Logo';
 
 import {COLORS, DIM} from '../constants';
 import Buttons from '../components/Buttons';
@@ -80,13 +81,14 @@ export default function CustomerRegistration() {
       <ScrollView
         contentContainerStyle={styles.container}
         showsVerticalScrollIndicator={false}>
-        <View style={styles.logoContainer}>
+        {/* <View style={styles.logoContainer}>
           <Image
             source={require('../assets/logo.png')}
             style={styles.logo}
             resizeMode={'cover'}
           />
-        </View>
+        </View> */}
+        <Logo />
         <Text
           style={{
             fontSize: 35,
@@ -306,6 +308,7 @@ export default function CustomerRegistration() {
                   style={{
                     marginLeft: 10,
                   }}
+                  tintColors={{true: COLORS.primary, false: COLORS.basic}}
                 />
                 <Text
                   style={{
@@ -322,6 +325,7 @@ export default function CustomerRegistration() {
                   style={{
                     marginLeft: 10,
                   }}
+                  tintColors={{true: COLORS.primary, false: COLORS.basic}}
                 />
               </View>
               <Buttons
@@ -346,11 +350,11 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   container: {
-    paddingTop: 40,
     backgroundColor: COLORS.white,
     justifyContent: 'center',
     alignItems: 'center',
     paddingBottom: 50,
+    paddingTop: DIM.height * 0.05,
   },
   custom: {
     marginBottom: 10,

@@ -8,14 +8,14 @@ import {COLORS, DIM} from '../constants';
 
 export default function ({
   text,
-  style,
+  customStyle,
   iconName,
   onPress,
   inAppIcon,
   letterSpacing,
 }) {
   return (
-    <TouchableOpacity style={[styles.container, style]} onPress={onPress}>
+    <TouchableOpacity style={[styles.container, customStyle]} onPress={onPress}>
       <View style={styles.buttonTextContainer}>
         <Text style={[styles.buttonText, {letterSpacing}]}>{text}</Text>
         <MaterialCommunityIcons

@@ -19,14 +19,14 @@ export default function RegisterMenu({navigation}) {
       </View>
       <Buttons
         text={'Customer'}
-        style={styles.custom}
+        customStyle={styles.custom}
         iconName="angle-right"
         letterSpacing={4}
         onPress={() => navigation.navigate('customerReg')}
       />
       <Buttons
         text={'Owner'}
-        style={styles.custom}
+        customStyle={styles.custom}
         iconName="angle-right"
         letterSpacing={4}
         onPress={() => navigation.navigate('ownerReg')}

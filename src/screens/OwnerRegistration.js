@@ -19,6 +19,7 @@ import {COLORS, DIM} from '../constants';
 import CustomInput from '../components/CustomInput';
 import Buttons from '../components/Buttons';
 import ErrorComponent from '../components/ErrorComponent';
+import Logo from '../components/Logo';
 
 export default function OwnerRegistration() {
   const validationSchema = yup.object().shape({
@@ -37,7 +38,7 @@ export default function OwnerRegistration() {
     szPool: yup.string().required('Pool Measurement is mandatory !'),
     len: yup.string().required('Length of Pool is mandatory !'),
     brdth: yup.string().required('Breadth of Pool is mandatory !'),
-    mob: yup.string().required('Mobile number is mandatory !'),
+    mob: yup.string().min(9).required('Mobile number is mandatory !'),
     pan: yup.string().required('Provide the PAN number !'),
     gst: yup.string().required('Provide the GST number !'),
   });
@@ -88,13 +89,7 @@ export default function OwnerRegistration() {
     <ScrollView
       contentContainerStyle={styles.container}
       showsVerticalScrollIndicator={false}>
-      <View style={styles.logoContainer}>
-        <Image
-          source={require('../assets/logo.png')}
-          style={styles.logo}
-          resizeMode={'cover'}
-        />
-      </View>
+      <Logo />
       <Text
         style={{
           fontSize: 35,
@@ -383,6 +378,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingBottom: 50,
+    paddingTop: DIM.height * 0.05,
   },
   custom: {
     marginBottom: 10,

@@ -19,14 +19,15 @@ export default function MenuScreen({navigation}) {
       <Text style={styles.appName}>Appname</Text>
       <Buttons
         text={'LOGIN'}
-        style={styles.custom}
+        customStyle={styles.custom}
         iconName="angle-right"
         inAppIcon={'account-arrow-right'}
         letterSpacing={3}
+        onPress={() => navigation.navigate('login')}
       />
       <Buttons
         text={'REGISTER'}
-        style={styles.custom}
+        customStyle={styles.custom}
         iconName="angle-right"
         onPress={() => navigation.navigate('registerMenu')}
         inAppIcon={'account-plus'}
