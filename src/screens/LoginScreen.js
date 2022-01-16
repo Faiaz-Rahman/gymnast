@@ -55,8 +55,11 @@ export default function LoginScreen() {
             iconName="angle-right"
             style={styles.loginButton}
             onPress={() => {
-              if (email === '' && pass === '') {
-                Alert.alert('Appname', 'Provide your email and password');
+              if (email === '' || pass === '') {
+                Alert.alert(
+                  'Appname',
+                  'Provide your Email and Password to log in',
+                );
               } else {
                 setAnim(true);
                 setTimeout(() => {
