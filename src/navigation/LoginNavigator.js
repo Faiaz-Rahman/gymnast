@@ -10,6 +10,7 @@ import RegisterMenu from '../screens/RegisterMenu';
 import CustomerRegistration from '../screens/CustomerRegistration';
 import OwnerRegistration from '../screens/OwnerRegistration';
 import LoginScreen from '../screens/LoginScreen';
+import LoginMenu from '../screens/LoginMenu';
 
 const Stack = createNativeStackNavigator();
 
@@ -61,6 +62,15 @@ const LoginNavigator = () => {
         options={{
           headerShown: false,
           animation: 'fade',
+        }}
+      />
+
+      <Stack.Screen
+        name="loginMenu"
+        component={LoginMenu}
+        options={{
+          headerShown: false,
+          animation: 'slide_from_right',
         }}
       />
 

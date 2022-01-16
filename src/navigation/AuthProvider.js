@@ -31,22 +31,43 @@ export const AuthProvider = ({children}) => {
             );
           }
         },
-        register: async (email, password, firstName) => {
+        register: async (
+          email,
+          pass,
+          name,
+          phone,
+          address,
+          height,
+          weight,
+          gym,
+          pool,
+        ) => {
           try {
-            await auth().createUserWithEmailAndPassword(email, password);
+            await auth().createUserWithEmailAndPassword(email, pass);
 
             await firestore()
               .collection('users')
               .add({
                 userId: auth().currentUser.uid,
-                name: firstName,
+                name,
                 createdAt: firestore.Timestamp.fromDate(new Date()),
-                userImg: 'none',
-                email: auth().currentUser.email,
+                email,
+                phone,
+                address,
+                height,
+                weight,
+                gym,
+                pool,
               })
               .then(() => console.log('User added !'))
-              .catch(error => console.log(error));
-
+              .catch(error => Alert.alert('Appname', error));
+            Alert.alert(
+              'Appname',
+              'Your account has been created, Login to continue',
+            );
+            setTimeout(() => {
+              setUser(null);
+            }, 2000);
             await auth().signOut();
           } catch (e) {
             console.log(e);

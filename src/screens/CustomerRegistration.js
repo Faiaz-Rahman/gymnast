@@ -1,10 +1,9 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   StyleSheet,
   TouchableWithoutFeedback,
   Text,
   View,
-  Image,
   ScrollView,
   Modal,
 } from 'react-native';
@@ -18,9 +17,11 @@ import CheckBox from '@react-native-community/checkbox';
 
 import CustomInput from '../components/CustomInput';
 import Logo from '../components/Logo';
+import ErrorComponent from '../components/ErrorComponent';
 
 import {COLORS, DIM} from '../constants';
 import Buttons from '../components/Buttons';
+import {AuthContext} from '../navigation/AuthProvider';
 
 export default function CustomerRegistration() {
   const [selectedDate, setSelectedDate] = useState('Date of Birth');
@@ -35,13 +36,26 @@ export default function CustomerRegistration() {
     confPass: yup
       .string()
       .oneOf([yup.ref('pass'), null], 'Passwords not match !'),
-    phone: yup.string().required('Phone Number is required !'),
+    phone: yup
+      .string()
+      .min(10, 'Phone number must be of 10 digits')
+      .max(10, 'Phone number must be of 10 digits')
+      .required('Phone Number is required !'),
     address: yup.string().required('Address is required !'),
   });
 
   const [calOpen, setCalOpen] = useState(false);
   const [gym, setGym] = useState(false);
   const [pool, setPool] = useState(false);
+  const [dob, setDob] = useState(false);
+
+  const checkBox = [];
+  const addSelectionToArray = () => {
+    if (gym) checkBox.push('gym');
+    if (pool) checkBox.push('pool');
+  };
+
+  const {register} = useContext(AuthContext);
 
   return (
     <>
@@ -59,6 +73,7 @@ export default function CustomerRegistration() {
                 const datetime = date.toString().slice(8, 10);
                 const year = date.toString().slice(11, 15);
                 setSelectedDate(month + ' ' + datetime + ', ' + year);
+                setDob(true);
               }}
               selectedDayStyle={{
                 backgroundColor: COLORS.primary,
@@ -93,7 +108,6 @@ export default function CustomerRegistration() {
         <Formik
           initialValues={{
             name: '',
-            dob: '',
             email: '',
             pass: '',
             confPass: '',
@@ -103,7 +117,37 @@ export default function CustomerRegistration() {
             weight: '',
           }}
           validationSchema={validationSchema}
-          onSubmit={values => console.log(values)}>
+          onSubmit={({
+            name,
+            email,
+            pass,
+            confPass,
+            phone,
+            address,
+            height,
+            weight,
+          }) => {
+            let gym = '',
+              pool = '';
+            if (checkBox.includes('gym')) {
+              gym = 'gym';
+            }
+            if (checkBox.includes('pool')) {
+              pool = 'pool';
+            }
+            register(
+              email,
+              pass,
+              name,
+              phone,
+              address,
+              height,
+              weight,
+              gym,
+              pool,
+              selectedDate,
+            );
+          }}>
           {({handleSubmit, handleChange, errors, touched}) => (
             <>
               <CustomInput
@@ -113,17 +157,7 @@ export default function CustomerRegistration() {
                 onChangeText={handleChange('name')}
               />
               {errors.name && touched.name && (
-                <View>
-                  <Text
-                    style={{
-                      color: COLORS.primary,
-                      fontSize: 15,
-                      fontWeight: '600',
-                      paddingBottom: 10,
-                    }}>
-                    {errors.name}
-                  </Text>
-                </View>
+                <ErrorComponent error={errors.name} />
               )}
               <TouchableWithoutFeedback
                 onPress={() => {
@@ -139,38 +173,22 @@ export default function CustomerRegistration() {
                   <Text style={styles.text}>{selectedDate}</Text>
                 </View>
               </TouchableWithoutFeedback>
-              {selectedDate === 'Date of Birth' && touched.name && (
-                <View>
-                  <Text
-                    style={{
-                      color: COLORS.primary,
-                      fontSize: 15,
-                      fontWeight: '600',
-                      paddingBottom: 10,
-                    }}>
-                    {'Date of birth is mandatory !'}
-                  </Text>
-                </View>
+
+              {selectedDate === 'Date of Birth' && dob && (
+                <ErrorComponent error={'Date of birth is mandatory !'} />
               )}
+
               <CustomInput
                 text="Enter the Email"
                 iconName="mail"
                 customStyle={styles.custom}
                 onChangeText={handleChange('email')}
               />
+
               {errors.email && touched.email && (
-                <View>
-                  <Text
-                    style={{
-                      color: COLORS.primary,
-                      fontSize: 15,
-                      fontWeight: '600',
-                      paddingBottom: 10,
-                    }}>
-                    {errors.email}
-                  </Text>
-                </View>
+                <ErrorComponent error={errors.email} />
               )}
+
               <CustomInput
                 text="Enter Password"
                 iconName="lock-open"
@@ -178,19 +196,11 @@ export default function CustomerRegistration() {
                 passEntry
                 onChangeText={handleChange('pass')}
               />
+
               {errors.pass && touched.pass && (
-                <View>
-                  <Text
-                    style={{
-                      color: COLORS.primary,
-                      fontSize: 15,
-                      fontWeight: '600',
-                      paddingBottom: 10,
-                    }}>
-                    {errors.pass}
-                  </Text>
-                </View>
+                <ErrorComponent error={errors.pass} />
               )}
+
               <CustomInput
                 text="Confirm Password"
                 iconName="lock-open"
@@ -198,19 +208,11 @@ export default function CustomerRegistration() {
                 passEntry
                 onChangeText={handleChange('confPass')}
               />
+
               {errors.confPass && touched.confPass && (
-                <View>
-                  <Text
-                    style={{
-                      color: COLORS.primary,
-                      fontSize: 15,
-                      fontWeight: '600',
-                      paddingBottom: 10,
-                    }}>
-                    {errors.confPass}
-                  </Text>
-                </View>
+                <ErrorComponent error={errors.confPass} />
               )}
+
               <CustomInput
                 text="Enter Phone no."
                 iconName="call"
@@ -218,50 +220,36 @@ export default function CustomerRegistration() {
                 keyboardType={'numeric'}
                 onChangeText={handleChange('phone')}
               />
+
               {errors.phone && touched.phone && (
-                <View>
-                  <Text
-                    style={{
-                      color: COLORS.primary,
-                      fontSize: 15,
-                      fontWeight: '600',
-                      paddingBottom: 10,
-                    }}>
-                    {errors.phone}
-                  </Text>
-                </View>
+                <ErrorComponent error={errors.phone} />
               )}
+
               <CustomInput
                 text="Enter your Address"
                 iconName="location-sharp"
                 customStyle={styles.custom}
                 onChangeText={handleChange('address')}
               />
+
               {errors.address && touched.address && (
-                <View>
-                  <Text
-                    style={{
-                      color: COLORS.primary,
-                      fontSize: 15,
-                      fontWeight: '600',
-                      paddingBottom: 10,
-                    }}>
-                    {errors.address}
-                  </Text>
-                </View>
+                <ErrorComponent error={errors.address} />
               )}
+
               <CustomInput
                 text="Your height"
                 iconName="md-man"
                 customStyle={styles.custom}
                 onChangeText={handleChange('height')}
               />
+
               <CustomInput
-                text="Your weight(in kgs)"
+                text="Your weight (in kgs)"
                 iconName="medical"
                 customStyle={styles.custom}
                 onChangeText={handleChange('weight')}
               />
+
               <View
                 style={{
                   height: DIM.height * 0.05,
@@ -278,6 +266,7 @@ export default function CustomerRegistration() {
                   Any active membership?
                 </Text>
               </View>
+
               <View style={styles.checkBoxContainer}>
                 <MaterialCommunityIcons
                   name="dumbbell"
@@ -319,11 +308,16 @@ export default function CustomerRegistration() {
                   tintColors={{true: COLORS.primary, false: COLORS.basic}}
                 />
               </View>
+
               <Buttons
                 text={'REGISTER'}
                 inAppIcon={'account-plus'}
                 iconName="angle-right"
-                onPress={handleSubmit}
+                onPress={() => {
+                  addSelectionToArray();
+                  handleSubmit();
+                  setDob(true);
+                }}
               />
             </>
           )}
