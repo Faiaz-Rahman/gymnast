@@ -58,7 +58,6 @@ export default function CustomerRegistration() {
                 const month = date.toString().slice(4, 7);
                 const datetime = date.toString().slice(8, 10);
                 const year = date.toString().slice(11, 15);
-                // console.log(month, datetime, year);
                 setSelectedDate(month + ' ' + datetime + ', ' + year);
               }}
               selectedDayStyle={{
@@ -70,7 +69,6 @@ export default function CustomerRegistration() {
                 fontWeight: '600',
                 color: COLORS.black,
               }}
-              scrollable
               height={DIM.height * 0.55}
               width={DIM.width * 0.87}
             />
@@ -81,13 +79,6 @@ export default function CustomerRegistration() {
       <ScrollView
         contentContainerStyle={styles.container}
         showsVerticalScrollIndicator={false}>
-        {/* <View style={styles.logoContainer}>
-          <Image
-            source={require('../assets/logo.png')}
-            style={styles.logo}
-            resizeMode={'cover'}
-          />
-        </View> */}
         <Logo />
         <Text
           style={{
