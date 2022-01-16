@@ -1,5 +1,5 @@
 import React, {useState, useContext} from 'react';
-import {Alert, StyleSheet, View} from 'react-native';
+import {Alert, StyleSheet, View, StatusBar} from 'react-native';
 import LottieView from 'lottie-react-native';
 
 import {COLORS} from '../constants';
@@ -19,13 +19,16 @@ export default function LoginScreen() {
   const interval = () => {
     return (
       <>
+        <StatusBar barStyle="dark-content" backgroundColor={COLORS.white} />
         <View
           style={{
             flex: 1,
             justifyContent: 'center',
             alignItems: 'center',
-          }}></View>
-        <LottieView source={require('../assets/loader.json')} autoPlay loop />
+            backgroundColor: COLORS.white,
+          }}>
+          <LottieView source={require('../assets/loader.json')} autoPlay loop />
+        </View>
       </>
     );
   };

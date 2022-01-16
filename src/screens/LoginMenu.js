@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, StatusBar, Text, View} from 'react-native';
 import Buttons from '../components/Buttons';
 
 import Logo from '../components/Logo';
@@ -8,6 +8,7 @@ import {COLORS} from '../constants';
 export default function LoginMenu({navigation}) {
   return (
     <View style={styles.container}>
+      <StatusBar barStyle="dark-content" backgroundColor={COLORS.white} />
       <Logo />
       <Text style={styles.appName}>Appname</Text>
       <Buttons
