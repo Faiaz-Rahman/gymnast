@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -7,6 +7,9 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
+import storage from '@react-native-firebase/storage';
+import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 
 import ImagePicker from 'react-native-image-crop-picker';
 import {Formik} from 'formik';
@@ -20,6 +23,7 @@ import CustomInput from '../components/CustomInput';
 import Buttons from '../components/Buttons';
 import ErrorComponent from '../components/ErrorComponent';
 import Logo from '../components/Logo';
+import {AuthContext} from '../navigation/AuthProvider';
 
 export default function OwnerRegistration() {
   const validationSchema = yup.object().shape({
@@ -38,12 +42,19 @@ export default function OwnerRegistration() {
     szPool: yup.string().required('Pool Measurement is mandatory !'),
     len: yup.string().required('Length of Pool is mandatory !'),
     brdth: yup.string().required('Breadth of Pool is mandatory !'),
-    mob: yup.string().min(9).required('Mobile number is mandatory !'),
+    mob: yup
+      .string()
+      .min(9, 'Phone number is of 9 digits')
+      .max(9, 'Phone number is of 9 digits')
+      .required('Mobile number is mandatory !'),
     pan: yup.string().required('Provide the PAN number !'),
     gst: yup.string().required('Provide the GST number !'),
   });
 
+  const {logout, ownerRegister} = useContext(AuthContext);
+
   const [image, setImage] = useState(null);
+
   const [sat, setSat] = useState(false);
   const [sun, setSun] = useState(false);
   const [mon, setMon] = useState(false);
@@ -57,6 +68,8 @@ export default function OwnerRegistration() {
   const selectedDays = [];
 
   const [daysError, setDaysError] = useState(false);
+  const [uploading, setUploading] = useState(null);
+  const [transferred, setTransferred] = useState(0);
 
   const addDaysToArray = () => {
     if (sat) selectedDays.push('sat');
@@ -67,6 +80,12 @@ export default function OwnerRegistration() {
     if (thu) selectedDays.push('thu');
     if (fri) selectedDays.push('fri');
   };
+
+  useEffect(() => {
+    return () => {
+      setImage(null);
+    };
+  }, []);
 
   const chooseImageFromLibrary = () => {
     setImagePickerOpened(true);
@@ -79,10 +98,60 @@ export default function OwnerRegistration() {
       .then(image => {
         const imageUri = image.path;
         setImage(imageUri);
+        // console.log(imageUri);
       })
       .catch(() => {
         setImage(null);
       });
+  };
+
+  const uploadImage = async image => {
+    if (image) {
+      const uploadUri = image;
+      let filename = uploadUri.substring(uploadUri.lastIndexOf('/') + 1);
+
+      setUploading(true);
+      setTransferred(0);
+
+      const storageRef = storage().ref(`photos/${filename}`);
+      const task = storageRef.putFile(uploadUri);
+
+      task.on('state_changed', taskSnapshot => {
+        setTransferred(
+          Math.round(taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) *
+            100,
+        );
+      });
+
+      try {
+        await task;
+
+        const url = await storageRef.getDownloadURL();
+
+        setUploading(false);
+
+        return url;
+      } catch (error) {
+        console.log(error);
+        return null;
+      }
+    } else return '';
+  };
+
+  const addImageToFirestore = async () => {
+    const link_for_upload = await uploadImage(image);
+    const uid = auth().currentUser.uid.toString();
+
+    await firestore()
+      .collection('owners')
+      .doc(uid)
+      .update({
+        image: link_for_upload,
+      })
+      .then(() => console.log('Data updated!'))
+      .catch(e => console.log(e));
+
+    await logout();
   };
 
   return (
@@ -117,7 +186,40 @@ export default function OwnerRegistration() {
           gst: '',
         }}
         validationSchema={validationSchema}
-        onSubmit={values => console.log(values)}>
+        onSubmit={({
+          name,
+          address,
+          email,
+          pass,
+          confPass,
+          state,
+          city,
+          szPool,
+          len,
+          brdth,
+          mob,
+          pan,
+          gst,
+        }) => {
+          ownerRegister(
+            name,
+            address,
+            email,
+            pass,
+            state,
+            city,
+            szPool,
+            len,
+            brdth,
+            mob,
+            pan,
+            gst,
+            selectedDays,
+          );
+
+          // Attaching the image link to firestore ...
+          addImageToFirestore();
+        }}>
         {({handleSubmit, handleChange, touched, errors}) => (
           <>
             <CustomInput
@@ -356,11 +458,13 @@ export default function OwnerRegistration() {
               iconName="angle-right"
               onPress={() => {
                 addDaysToArray();
-                if (!selectedDays.length) {
-                  setDaysError(true);
-                }
                 if (!imagePickerOpened) {
                   setImagePickerOpened(true);
+                }
+                if (!selectedDays.length) {
+                  setDaysError(true);
+                } else {
+                  setDaysError(false);
                 }
                 handleSubmit();
               }}

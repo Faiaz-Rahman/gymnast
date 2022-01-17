@@ -80,6 +80,61 @@ export const AuthProvider = ({children}) => {
             console.log(e);
           }
         },
+        ownerRegister: async (
+          name,
+          address,
+          email,
+          pass,
+          state,
+          city,
+          szPool,
+          len,
+          brdth,
+          mob,
+          pan,
+          gst,
+          selectedDays,
+        ) => {
+          try {
+            await auth().createUserWithEmailAndPassword(email, pass);
+            let docString = auth().currentUser.uid.toString();
+
+            await firestore()
+              .collection('owners')
+              .doc(docString)
+              .set({
+                userId: auth().currentUser.uid,
+                name,
+                createdAt: firestore.Timestamp.fromDate(new Date()),
+                address,
+                email,
+                state,
+                city,
+                szPool,
+                len,
+                brdth,
+                mob,
+                pan,
+                gst,
+                selectedDays,
+              })
+              .then(() => console.log('Admin added !'))
+              .catch(error => Alert.alert('Appname', error));
+            Alert.alert(
+              'Appname',
+              'Your account has been created, Login to continue',
+            );
+          } catch (e) {
+            console.log(e);
+          }
+        },
+        logout: async () => {
+          try {
+            await auth().signOut();
+          } catch (e) {
+            console.log(e);
+          }
+        },
       }}>
       {children}
     </AuthContext.Provider>

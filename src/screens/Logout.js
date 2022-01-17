@@ -17,6 +17,7 @@ export default function Logout() {
           alignItems: 'center',
           backgroundColor: COLORS.white,
         }}>
+        <StatusBar backgroundColor="white" barStyle={'dark-content'} />
         <LottieView source={require('../assets/loader.json')} autoPlay loop />
       </View>
     );

@@ -1,18 +1,14 @@
 import React from 'react';
 import {StyleSheet, Text, View, Image} from 'react-native';
+
 import Buttons from '../components/Buttons';
 import {COLORS} from '../constants';
+import Logo from '../components/Logo';
 
 export default function RegisterMenu({navigation}) {
   return (
     <View style={styles.container}>
-      <View style={styles.logoContainer}>
-        <Image
-          source={require('../assets/logo.png')}
-          style={styles.logo}
-          resizeMode={'cover'}
-        />
-      </View>
+      <Logo />
       <Text style={styles.appName}>Appname</Text>
       <View style={styles.titleContainer}>
         <Text style={styles.title}>Register me as a -</Text>
@@ -50,19 +46,6 @@ const styles = StyleSheet.create({
   },
   custom: {
     marginTop: 50,
-  },
-  logo: {
-    height: 400,
-    width: 400,
-  },
-  logoContainer: {
-    overflow: 'hidden',
-    height: 133,
-    width: 133,
-    justifyContent: 'center',
-    alignItems: 'center',
-    elevation: 15,
-    borderRadius: 26,
   },
   titleContainer: {
     paddingTop: 20,

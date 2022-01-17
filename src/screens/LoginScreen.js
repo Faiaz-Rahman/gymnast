@@ -38,6 +38,7 @@ export default function LoginScreen() {
       {anim && interval()}
       {!anim && (
         <View style={styles.container}>
+          <StatusBar backgroundColor="white" barStyle={'dark-content'} />
           <Logo customStyle={styles.customStyle} />
           <CustomInput
             text="Enter your email"

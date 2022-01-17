@@ -5,6 +5,7 @@ import {
   Text,
   View,
   ScrollView,
+  StatusBar,
   Modal,
 } from 'react-native';
 
@@ -90,6 +91,7 @@ export default function CustomerRegistration() {
           </View>
         </Modal>
       )}
+      <StatusBar backgroundColor="white" barStyle={'dark-content'} />
 
       <ScrollView
         contentContainerStyle={styles.container}
