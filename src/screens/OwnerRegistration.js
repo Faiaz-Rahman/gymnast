@@ -98,7 +98,6 @@ export default function OwnerRegistration() {
       .then(image => {
         const imageUri = image.path;
         setImage(imageUri);
-        // console.log(imageUri);
       })
       .catch(() => {
         setImage(null);

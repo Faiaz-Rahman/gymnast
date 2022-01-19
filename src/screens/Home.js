@@ -10,6 +10,8 @@ import {
   StatusBar,
 } from 'react-native';
 
+import firestore from '@react-native-firebase/firestore';
+
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Octicons from 'react-native-vector-icons/Octicons';
 import Card from '../components/Card';
@@ -26,6 +28,61 @@ export default function Home({navigation}) {
   }, [state]);
 
   const [searchBoxVisible, setSearchBoxVisible] = useState(false);
+  const [posts, setPosts] = useState();
+
+  const list = [];
+
+  const fetchPosts = async () => {
+    try {
+      await firestore().collection('owners').orderBy('createdAt', 'desc').get();
+      // .then(querySnapshot => {
+      //   querySnapshot.forEach(element => {
+      //     const {
+      //       userId,
+      //       name,
+      //       createdAt,
+      //       address,
+      //       email,
+      //       state,
+      //       city,
+      //       szPool,
+      //       len,
+      //       brdth,
+      //       mob,
+      //       image,
+      //       pan,
+      //       gst,
+      //       selectedDays,
+      //     } = doc.data();
+
+      //     list.push({
+      //       id: doc.id,
+      //       userId,
+      //       name,
+      //       createdAt,
+      //       address,
+      //       email,
+      //       state,
+      //       city,
+      //       szPool,
+      //       len,
+      //       brdth,
+      //       mob,
+      //       image,
+      //       pan,
+      //       gst,
+      //       selectedDays,
+      //     });
+      //     setPosts(list);
+      // });
+      // });
+      console.log('Total post', querySnapshot.size);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  fetchPosts();
 
   return (
     <View style={styles.container}>
@@ -66,7 +123,7 @@ export default function Home({navigation}) {
           paddingBottom: 40,
           paddingTop: 10,
         }}>
-        {Data.map((item, index) => {
+        {list.map((item, index) => {
           return <Card key={index} item={item} />;
         })}
       </ScrollView>
