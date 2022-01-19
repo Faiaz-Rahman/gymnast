@@ -1,10 +1,10 @@
 import React from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {COLORS, DIM} from '../constants';
 
 export default function Card({item}) {
   return (
-    <View style={styles.containerCard}>
+    <TouchableOpacity style={styles.containerCard}>
       <Image
         source={{uri: item.uri}}
         style={{
@@ -12,7 +12,7 @@ export default function Card({item}) {
           width: '100%',
         }}
       />
-    </View>
+    </TouchableOpacity>
   );
 }
 
