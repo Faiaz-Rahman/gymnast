@@ -222,7 +222,7 @@ export default function OwnerRegistration() {
         {({handleSubmit, handleChange, touched, errors}) => (
           <>
             <CustomInput
-              text="Enter your Name"
+              text="Enter your Full Name"
               iconName="create-sharp"
               customStyle={styles.custom}
               onChangeText={handleChange('name')}
