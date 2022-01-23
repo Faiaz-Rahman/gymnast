@@ -23,6 +23,7 @@ import Card from '../components/Card';
 import {COLORS, DIM} from '../constants';
 
 export default function Home({navigation}) {
+  // Getting the Navigation State
   let state = useNavigationState(state => state.index);
 
   const wait = timeout => {
@@ -30,6 +31,7 @@ export default function Home({navigation}) {
   };
 
   useEffect(() => {
+    // Changes the Search Box visibility on Navigation State Change
     return () => {
       setSearchBoxVisible(false);
     };
@@ -46,6 +48,7 @@ export default function Home({navigation}) {
   const [showDetails, setShowDetails] = useState(false);
   const [item, setItem] = useState();
 
+  // Fetching the data from Firebase/Firestore
   const fetchPosts = async () => {
     const list = [];
     try {
@@ -97,6 +100,7 @@ export default function Home({navigation}) {
     }
   };
 
+  //Called when Pull to Refresh is Activated
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     fetchPosts();
@@ -114,6 +118,7 @@ export default function Home({navigation}) {
           <Octicons name="three-bars" size={30} color={COLORS.black} />
         </TouchableOpacity>
 
+        {/* Whether the Search Box will be visible or not */}
         {!searchBoxVisible && (
           <View style={styles.headerTitleContainer}>
             <Text style={styles.headerTitle}>{'Feed'}</Text>
@@ -130,12 +135,16 @@ export default function Home({navigation}) {
           </View>
         )}
 
+        {/* Search Icon */}
         <TouchableOpacity
           onPress={() => setSearchBoxVisible(!searchBoxVisible)}
           style={styles.searchStyle}>
           <FontAwesome name="search" size={30} color={COLORS.black} />
         </TouchableOpacity>
       </View>
+
+      {/* This block of code runs while the fetching of data 
+      from firebase is not completed */}
       {loading && (
         <View
           style={{
@@ -146,9 +155,12 @@ export default function Home({navigation}) {
           <ActivityIndicator size="large" color={COLORS.primary} />
         </View>
       )}
+
+      {/* This block of code runs when fetching is complete */}
       {!loading && (
         <>
           {showDetails && (
+            // Modal for Showing the Details of data
             <Modal
               animationType="slide"
               transparent
