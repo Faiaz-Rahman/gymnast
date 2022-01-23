@@ -14,6 +14,7 @@ export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
 
+  // Acquired Functions from AuthContext in AuthProvider
   const {login, anim, setAnim} = useContext(AuthContext);
 
   const interval = () => {
@@ -27,6 +28,7 @@ export default function LoginScreen() {
             alignItems: 'center',
             backgroundColor: COLORS.white,
           }}>
+          {/* Animation loaded with Lottie-React-Native */}
           <LottieView source={require('../assets/loader.json')} autoPlay loop />
         </View>
       </>
@@ -35,17 +37,24 @@ export default function LoginScreen() {
 
   return (
     <>
+      {/* If animation state is active this block is run  */}
       {anim && interval()}
+
+      {/* else --- */}
       {!anim && (
         <View style={styles.container}>
           <StatusBar backgroundColor="white" barStyle={'dark-content'} />
+
+          {/* Logo Component */}
           <Logo customStyle={styles.customStyle} />
+
           <CustomInput
             text="Enter your email"
             iconName="mail"
             customStyle={styles.custom}
             onChangeText={text => setEmail(text)}
           />
+
           <CustomInput
             text="Enter Password"
             iconName="key"
@@ -53,6 +62,7 @@ export default function LoginScreen() {
             onChangeText={text => setPass(text)}
             passEntry
           />
+
           <Buttons
             text={'Login'}
             inAppIcon={'share-outline'}
@@ -66,6 +76,8 @@ export default function LoginScreen() {
                 );
               } else {
                 setAnim(true);
+
+                // Timeout is set for calling the login function
                 setTimeout(() => {
                   login(email, pass);
                 }, 1500);
