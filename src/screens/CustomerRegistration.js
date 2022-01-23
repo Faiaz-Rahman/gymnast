@@ -138,6 +138,8 @@ export default function CustomerRegistration() {
             height,
             weight,
           }) => {
+            // Includes the gym and pool checkbox data to CheckBox array
+
             let gym = '',
               pool = '';
             if (checkBox.includes('gym')) {
@@ -172,6 +174,7 @@ export default function CustomerRegistration() {
                 // Custom ErrorComponent for Displaying Errors
                 <ErrorComponent error={errors.name} />
               )}
+
               <TouchableWithoutFeedback
                 onPress={() => {
                   setCalOpen(true);
@@ -267,7 +270,6 @@ export default function CustomerRegistration() {
                 style={{
                   height: DIM.height * 0.05,
                   width: DIM.width,
-                  // backgroundColor: 'red',
                   paddingLeft: DIM.width * 0.1,
                 }}>
                 <Text
@@ -322,6 +324,7 @@ export default function CustomerRegistration() {
                 />
               </View>
 
+              {/* REGISTER BUTTON */}
               <Buttons
                 text={'REGISTER'}
                 inAppIcon={'account-plus'}
