@@ -27,6 +27,7 @@ import {AuthContext} from '../navigation/AuthProvider';
 export default function CustomerRegistration() {
   const [selectedDate, setSelectedDate] = useState('Date of Birth');
 
+  // Declaring The Validation Schema For Validating Form Input
   const validationSchema = yup.object().shape({
     name: yup.string().required('Your name is required !'),
     email: yup
@@ -50,16 +51,19 @@ export default function CustomerRegistration() {
   const [pool, setPool] = useState(false);
   const [dob, setDob] = useState(false);
 
+  // This array's been taken for taking checkbox inputs
   const checkBox = [];
   const addSelectionToArray = () => {
     if (gym) checkBox.push('gym');
     if (pool) checkBox.push('pool');
   };
 
+  // Register Method's been called from the AuthContext in AuthProvider
   const {register} = useContext(AuthContext);
 
   return (
     <>
+      {/* Opens Up the Calendar */}
       {calOpen && (
         <Modal
           animationType="slide"
@@ -73,6 +77,8 @@ export default function CustomerRegistration() {
                 const month = date.toString().slice(4, 7);
                 const datetime = date.toString().slice(8, 10);
                 const year = date.toString().slice(11, 15);
+
+                // Formatting the Date (From object to string)
                 setSelectedDate(month + ' ' + datetime + ', ' + year);
                 setDob(true);
               }}
@@ -96,6 +102,7 @@ export default function CustomerRegistration() {
       <ScrollView
         contentContainerStyle={styles.container}
         showsVerticalScrollIndicator={false}>
+        {/* Renders the Logo of App */}
         <Logo />
         <Text
           style={{
@@ -107,6 +114,8 @@ export default function CustomerRegistration() {
           }}>
           Customer Registration
         </Text>
+
+        {/* Taking Form Input and Validation with Formik */}
         <Formik
           initialValues={{
             name: '',
@@ -152,6 +161,7 @@ export default function CustomerRegistration() {
           }}>
           {({handleSubmit, handleChange, errors, touched}) => (
             <>
+              {/* Custom TextInput Component for Taking User Input */}
               <CustomInput
                 text="Enter your Name"
                 iconName="create-sharp"
@@ -159,6 +169,7 @@ export default function CustomerRegistration() {
                 onChangeText={handleChange('name')}
               />
               {errors.name && touched.name && (
+                // Custom ErrorComponent for Displaying Errors
                 <ErrorComponent error={errors.name} />
               )}
               <TouchableWithoutFeedback
