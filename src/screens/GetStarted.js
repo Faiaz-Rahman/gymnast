@@ -1,9 +1,12 @@
+// This screen is shown only first time the app is installed
+
 import React, {useRef, useEffect} from 'react';
 import {Animated, Image, StatusBar, StyleSheet, Text, View} from 'react-native';
 import Buttons from '../components/Buttons';
 import {COLORS, DIM} from '../constants';
 
 export default function GetStarted({navigation}) {
+  // Animated Value initiated to zero
   const animation = useRef(new Animated.Value(0)).current;
 
   const animatedStyles = {
@@ -15,6 +18,7 @@ export default function GetStarted({navigation}) {
   };
 
   useEffect(() => {
+    // Animation Added
     Animated.timing(animation, {
       toValue: 1,
       duration: 400,
