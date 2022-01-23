@@ -51,6 +51,7 @@ export default function OwnerRegistration() {
     gst: yup.string().required('Provide the GST number !'),
   });
 
+  // AuthContext's used to call the following functions
   const {logout, ownerRegister} = useContext(AuthContext);
 
   const [image, setImage] = useState(null);
@@ -87,6 +88,7 @@ export default function OwnerRegistration() {
     };
   }, []);
 
+  // Image Picker is set
   const chooseImageFromLibrary = () => {
     setImagePickerOpened(true);
 
@@ -104,6 +106,8 @@ export default function OwnerRegistration() {
       });
   };
 
+  //  Uploading Image to firebase and extracting download URL for
+  //  Firestore
   const uploadImage = async image => {
     if (image) {
       const uploadUri = image;
@@ -112,6 +116,7 @@ export default function OwnerRegistration() {
       setUploading(true);
       setTransferred(0);
 
+      // Using Storage Reference photos
       const storageRef = storage().ref(`photos/${filename}`);
       const task = storageRef.putFile(uploadUri);
 
@@ -137,6 +142,7 @@ export default function OwnerRegistration() {
     } else return '';
   };
 
+  // Adds the link to firebase < image > tag
   const addImageToFirestore = async () => {
     const link_for_upload = await uploadImage(image);
     const uid = auth().currentUser.uid.toString();
@@ -168,6 +174,9 @@ export default function OwnerRegistration() {
         }}>
         Pool Owner Registration
       </Text>
+
+      {/* Formik form schema && validation */}
+
       <Formik
         initialValues={{
           name: '',
@@ -366,6 +375,7 @@ export default function OwnerRegistration() {
             {image === null && imagePickerOpened && (
               <ErrorComponent error="You must upload an image !" />
             )}
+
             <View style={styles.selectDaysContainer}>
               <Text style={styles.selectDaysText}>Select Days</Text>
               <View style={styles.daysPicker}>
@@ -456,6 +466,8 @@ export default function OwnerRegistration() {
               inAppIcon={'account-plus'}
               iconName="angle-right"
               onPress={() => {
+                //Add days to the array after calling this function
+
                 addDaysToArray();
                 if (!imagePickerOpened) {
                   setImagePickerOpened(true);
