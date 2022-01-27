@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import {Alert, StyleSheet, View, StatusBar} from 'react-native';
 import LottieView from 'lottie-react-native';
 
@@ -10,9 +10,15 @@ import Buttons from '../components/Buttons';
 
 import {AuthContext} from '../navigation/AuthProvider';
 
-export default function LoginScreen() {
+export default function LoginScreen({route}) {
   const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
+
+  const admins = route.params.owners;
+  const users = route.params.users;
+  useEffect(() => {
+    // console.log(admins, users);
+  }, []);
 
   // Acquired Functions from AuthContext in AuthProvider
   const {login, anim, setAnim} = useContext(AuthContext);
@@ -74,6 +80,34 @@ export default function LoginScreen() {
                   'Appname',
                   'Provide your Email and Password to log in',
                 );
+              } else if (!users.length) {
+                if (!admins.includes(email)) {
+                  Alert.alert(
+                    'Appname',
+                    'Open an Admin Account First to Continue.',
+                  );
+                } else {
+                  setAnim(true);
+
+                  // Timeout is set for calling the login function
+                  setTimeout(() => {
+                    login(email, pass);
+                  }, 1500);
+                }
+              } else if (!admins.length) {
+                if (!users.includes(email)) {
+                  Alert.alert(
+                    'Appname',
+                    'Open a Customer Account First to Continue.',
+                  );
+                } else {
+                  setAnim(true);
+
+                  // Timeout is set for calling the login function
+                  setTimeout(() => {
+                    login(email, pass);
+                  }, 1500);
+                }
               } else {
                 setAnim(true);
 

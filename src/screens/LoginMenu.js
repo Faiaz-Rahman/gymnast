@@ -1,11 +1,50 @@
-import React from 'react';
-import {StyleSheet, StatusBar, Text, View} from 'react-native';
-import Buttons from '../components/Buttons';
+import React, {useEffect, useState} from 'react';
 
+import {StyleSheet, StatusBar, Text, View} from 'react-native';
+import firestore from '@react-native-firebase/firestore';
+
+import Buttons from '../components/Buttons';
 import Logo from '../components/Logo';
 import {COLORS} from '../constants';
 
 export default function LoginMenu({navigation}) {
+  let listOwner = [];
+  let listUser = [];
+
+  const [owners, setOwners] = useState(null);
+  const [users, setUsers] = useState(null);
+
+  const fetchUsers = async () => {
+    try {
+      await firestore()
+        .collection('owners')
+        .get()
+        .then(querySnapshot => {
+          querySnapshot.forEach(doc => {
+            const {email} = doc.data();
+            listOwner.push(email);
+          });
+        });
+      setOwners(listOwner);
+      await firestore()
+        .collection('users')
+        .get()
+        .then(querySnapshot => {
+          querySnapshot.forEach(doc => {
+            const {email} = doc.data();
+            listUser.push(email);
+          });
+        });
+      setUsers(listUser);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
   return (
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor={COLORS.white} />
@@ -16,13 +55,15 @@ export default function LoginMenu({navigation}) {
         customStyle={styles.custom}
         iconName="angle-right"
         letterSpacing={3}
-        onPress={() => navigation.navigate('login')}
+        onPress={() =>
+          navigation.navigate('login', {owners: owners, users: []})
+        }
       />
       <Buttons
         text={'Customer Login'}
         customStyle={styles.custom}
         iconName="angle-right"
-        onPress={() => navigation.navigate('login')}
+        onPress={() => navigation.navigate('login', {owners: [], users: users})}
         letterSpacing={3}
       />
     </View>
