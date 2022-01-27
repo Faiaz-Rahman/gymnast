@@ -115,7 +115,7 @@ export default function Home({navigation}) {
         <TouchableOpacity
           onPress={() => navigation.toggleDrawer()}
           style={styles.threeBarStyle}>
-          <Octicons name="three-bars" size={30} color={COLORS.black} />
+          <Octicons name="three-bars" size={30} color={COLORS.primary} />
         </TouchableOpacity>
 
         {/* Whether the Search Box will be visible or not */}
@@ -142,7 +142,7 @@ export default function Home({navigation}) {
         <TouchableOpacity
           onPress={() => setSearchBoxVisible(!searchBoxVisible)}
           style={styles.searchStyle}>
-          <FontAwesome name="search" size={30} color={COLORS.black} />
+          <FontAwesome name="search" size={30} color={COLORS.primary} />
         </TouchableOpacity>
       </View>
 
