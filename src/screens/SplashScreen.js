@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, StatusBar} from 'react-native';
 
 import {COLORS} from '../constants';
 import Logo from '../components/Logo';
@@ -13,6 +13,7 @@ export default function SplashScreen({navigation}) {
   }, []);
   return (
     <View style={styles.container}>
+      <StatusBar barStyle="dark-content" backgroundColor={COLORS.white} />
       <Logo />
       <Text style={styles.appName}>Appname</Text>
     </View>
