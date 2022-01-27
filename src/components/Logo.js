@@ -15,13 +15,13 @@ export default function Logo({customStyle}) {
 
 const styles = StyleSheet.create({
   logo: {
-    height: 400,
-    width: 400,
+    height: 300,
+    width: 300,
   },
   logoContainer: {
     overflow: 'hidden',
-    height: 133,
-    width: 133,
+    height: 105,
+    width: 105,
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 15,
