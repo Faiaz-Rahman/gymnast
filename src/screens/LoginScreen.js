@@ -17,7 +17,7 @@ export default function LoginScreen({route}) {
   const admins = route.params.owners;
   const users = route.params.users;
   useEffect(() => {
-    // console.log(admins, users);
+    console.log(admins, users);
   }, []);
 
   // Acquired Functions from AuthContext in AuthProvider

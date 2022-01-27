@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 
 import {StyleSheet, StatusBar, Text, View} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
@@ -43,7 +43,7 @@ export default function LoginMenu({navigation}) {
 
   useEffect(() => {
     fetchUsers();
-  }, []);
+  }, [users, owners]);
 
   return (
     <View style={styles.container}>
@@ -55,15 +55,17 @@ export default function LoginMenu({navigation}) {
         customStyle={styles.custom}
         iconName="angle-right"
         letterSpacing={3}
-        onPress={() =>
-          navigation.navigate('login', {owners: owners, users: []})
-        }
+        onPress={() => {
+          navigation.navigate('login', {owners: owners, users: []});
+        }}
       />
       <Buttons
         text={'Customer Login'}
         customStyle={styles.custom}
         iconName="angle-right"
-        onPress={() => navigation.navigate('login', {owners: [], users: users})}
+        onPress={() => {
+          navigation.navigate('login', {owners: [], users: users});
+        }}
         letterSpacing={3}
       />
     </View>
