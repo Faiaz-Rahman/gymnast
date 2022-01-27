@@ -1,5 +1,5 @@
-import {useNavigationState} from '@react-navigation/native';
 import React, {useState, useEffect, useCallback} from 'react';
+
 import {
   StyleSheet,
   Text,
@@ -14,6 +14,7 @@ import {
   Image,
 } from 'react-native';
 
+import {useNavigationState} from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -142,7 +143,11 @@ export default function Home({navigation}) {
         <TouchableOpacity
           onPress={() => setSearchBoxVisible(!searchBoxVisible)}
           style={styles.searchStyle}>
-          <FontAwesome name="search" size={30} color={COLORS.primary} />
+          <FontAwesome
+            name={searchBoxVisible ? 'remove' : 'search'}
+            size={30}
+            color={COLORS.black}
+          />
         </TouchableOpacity>
       </View>
 
@@ -173,6 +178,7 @@ export default function Home({navigation}) {
               }}>
               <View style={styles.modalStyle}>
                 <ScrollView
+                  showsVerticalScrollIndicator={false}
                   contentContainerStyle={{
                     paddingBottom: 100,
                   }}>
@@ -302,7 +308,7 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: 22,
-    fontWeight: 'bold',
+    fontWeight: '900',
     color: COLORS.black,
     marginLeft: DIM.width * 0.05,
   },
@@ -334,10 +340,10 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 25,
     borderBottomLeftRadius: 25,
     borderBottomRightRadius: 25,
-    borderRightColor: 'green',
-    borderLeftColor: COLORS.lightViolet,
-    borderTopColor: 'tomato',
-    borderBottomColor: 'yellow',
+    borderRightColor: COLORS.lemon,
+    borderLeftColor: COLORS.primary,
+    borderTopColor: COLORS.lemon,
+    borderBottomColor: COLORS.primary,
     borderWidth: 10,
     opacity: 0.75,
     elevation: 4,
@@ -358,6 +364,8 @@ const styles = StyleSheet.create({
     height: '85%',
     justifyContent: 'center',
     borderRadius: 30,
+    borderWidth: 1.2,
+    borderColor: COLORS.black,
     backgroundColor: COLORS.slate,
     paddingLeft: 30,
   },
