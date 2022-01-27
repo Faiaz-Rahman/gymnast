@@ -120,8 +120,11 @@ export default function Home({navigation}) {
 
         {/* Whether the Search Box will be visible or not */}
         {!searchBoxVisible && (
-          <View style={styles.headerTitleContainer}>
-            <Text style={styles.headerTitle}>{'Feed'}</Text>
+          // Header changed as the theme color
+          <View style={styles.headerMainContainer}>
+            <View style={styles.headerTitleContainer}>
+              <Text style={styles.headerTitle}>{'Feed'}</Text>
+            </View>
           </View>
         )}
 
@@ -290,18 +293,26 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 2,
   },
+  // Some Designs changed
+  headerMainContainer: {
+    width: '60%',
+    height: '85%',
+    backgroundColor: COLORS.primary,
+    borderRadius: 100,
+  },
   headerTitle: {
     fontSize: 22,
     fontWeight: 'bold',
     color: COLORS.black,
+    marginLeft: DIM.width * 0.05,
   },
   headerTitleContainer: {
-    width: '60%',
-    height: '85%',
+    width: '85%',
+    height: '100%',
+    borderRadius: 100,
+    backgroundColor: COLORS.lemon,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 30,
-    backgroundColor: COLORS.slate,
   },
   modalHeaderContainer: {
     height: '45%',
