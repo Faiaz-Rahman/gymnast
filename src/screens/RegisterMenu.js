@@ -11,7 +11,8 @@ export default function RegisterMenu({navigation}) {
       <Logo />
       <Text style={styles.appName}>Appname</Text>
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>Register me as a -</Text>
+        {/* Changes made From Register me as a to Register as */}
+        <Text style={styles.title}>Register as</Text>
       </View>
       <Buttons
         text={'Customer'}
