@@ -11,6 +11,7 @@ import CustomerRegistration from '../screens/CustomerRegistration';
 import OwnerRegistration from '../screens/OwnerRegistration';
 import LoginScreen from '../screens/LoginScreen';
 import LoginMenu from '../screens/LoginMenu';
+import SplashScreen from '../screens/SplashScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -35,7 +36,7 @@ const LoginNavigator = () => {
   } else if (isFirstLaunch === true) {
     routename = 'gettingStarted';
   } else {
-    routename = 'menuScreen';
+    routename = 'splash';
   }
 
   return (
@@ -43,6 +44,14 @@ const LoginNavigator = () => {
       <Stack.Screen
         name="gettingStarted"
         component={GetStarted}
+        options={{
+          headerShown: false,
+        }}
+      />
+      {/* Splash Screen added */}
+      <Stack.Screen
+        name="splash"
+        component={SplashScreen}
         options={{
           headerShown: false,
         }}
