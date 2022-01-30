@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   StatusBar,
   Text,
   View,
   TouchableOpacity,
+  TextInput,
 } from 'react-native';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -13,46 +14,47 @@ import Octicons from 'react-native-vector-icons/Octicons';
 import {COLORS, DIM} from '../constants';
 
 export default function Payment({navigation}) {
+  const [searchBoxVisible, setSearchBoxVisible] = useState(false);
+
   return (
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor={COLORS.white} />
       <View style={styles.header}>
         <TouchableOpacity
           onPress={() => navigation.toggleDrawer()}
-          style={{
-            width: '20%',
-            height: '100%',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Octicons name="three-bars" size={30} color={COLORS.black} />
+          style={styles.threeBarStyle}>
+          <Octicons name="three-bars" size={30} color={COLORS.primary} />
         </TouchableOpacity>
-        <View
-          style={{
-            width: '60%',
-            height: '85%',
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderRadius: 30,
-            backgroundColor: COLORS.slate,
-          }}>
-          <Text
-            style={{
-              fontSize: 22,
-              fontWeight: 'bold',
-              color: COLORS.black,
-            }}>
-            {'Payment'}
-          </Text>
-        </View>
+
+        {/* Whether the Search Box will be visible or not */}
+        {!searchBoxVisible && (
+          // Header changed as the theme color
+          <View style={styles.headerMainContainer}>
+            <View style={styles.headerTitleContainer}>
+              <Text style={styles.headerTitle}>{'Payment'}</Text>
+            </View>
+          </View>
+        )}
+
+        {searchBoxVisible && (
+          <View style={styles.searchBoxStyle}>
+            <TextInput
+              placeholder="Search"
+              placeholderTextColor={'slategrey'}
+              style={styles.textInputStyle}
+            />
+          </View>
+        )}
+
+        {/* Search Icon */}
         <TouchableOpacity
-          style={{
-            width: '20%',
-            height: '100%',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <FontAwesome name="search" size={30} color={COLORS.black} />
+          onPress={() => setSearchBoxVisible(!searchBoxVisible)}
+          style={styles.searchStyle}>
+          <FontAwesome
+            name={searchBoxVisible ? 'remove' : 'search'}
+            size={30}
+            color={COLORS.black}
+          />
         </TouchableOpacity>
       </View>
     </View>
@@ -73,5 +75,60 @@ const styles = StyleSheet.create({
     // backgroundColor: 'red',
     alignItems: 'center',
     marginBottom: 2,
+  },
+  // Some Designs changed
+  headerMainContainer: {
+    width: '60%',
+    height: '85%',
+    backgroundColor: COLORS.primary,
+    borderRadius: 100,
+  },
+  headerTitle: {
+    fontSize: 22,
+    fontWeight: '900',
+    color: COLORS.black,
+    marginLeft: DIM.width * 0.05,
+  },
+  headerTitleContainer: {
+    width: '90%',
+    height: '100%',
+    borderRadius: 100,
+    backgroundColor: COLORS.lemon,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  searchStyle: {
+    width: '20%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  searchBoxStyle: {
+    width: '60%',
+    height: '85%',
+    justifyContent: 'center',
+    borderRadius: 30,
+    borderWidth: 1.2,
+    borderColor: COLORS.black,
+    backgroundColor: COLORS.slate,
+    paddingLeft: 30,
+  },
+  textInputStyle: {
+    fontSize: 18,
+    fontWeight: '600',
+    flex: 1,
+  },
+  threeBarStyle: {
+    width: '20%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  titleText: {
+    marginTop: 10,
+    fontSize: 23,
+    color: '#2F4F4F',
+    fontWeight: '800',
+    letterSpacing: 2,
   },
 });
