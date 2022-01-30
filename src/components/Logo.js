@@ -20,8 +20,8 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     overflow: 'hidden',
-    height: 105,
-    width: 105,
+    height: 100,
+    width: 100,
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 15,

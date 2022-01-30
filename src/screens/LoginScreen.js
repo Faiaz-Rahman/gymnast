@@ -80,7 +80,7 @@ export default function LoginScreen({route}) {
                   'Appname',
                   'Provide your Email and Password to log in',
                 );
-              } else if (!users.length) {
+              } else if (!users.length && admins.length) {
                 if (!admins.includes(email)) {
                   Alert.alert(
                     'Appname',
@@ -94,7 +94,7 @@ export default function LoginScreen({route}) {
                     login(email, pass);
                   }, 1500);
                 }
-              } else if (!admins.length) {
+              } else if (!admins.length && users.length) {
                 if (!users.includes(email)) {
                   Alert.alert(
                     'Appname',
@@ -108,7 +108,7 @@ export default function LoginScreen({route}) {
                     login(email, pass);
                   }, 1500);
                 }
-              } else {
+              } else if (email && pass && (admins.length || users.length)) {
                 setAnim(true);
 
                 // Timeout is set for calling the login function

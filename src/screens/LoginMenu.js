@@ -11,8 +11,8 @@ export default function LoginMenu({navigation}) {
   let listOwner = [];
   let listUser = [];
 
-  const [owners, setOwners] = useState(null);
-  const [users, setUsers] = useState(null);
+  const [owners, setOwners] = useState([]);
+  const [users, setUsers] = useState([]);
 
   const fetchUsers = async () => {
     try {
@@ -43,7 +43,14 @@ export default function LoginMenu({navigation}) {
 
   useEffect(() => {
     fetchUsers();
-  }, [users, owners]);
+    return () => {
+      {
+        setOwners([]);
+        setUsers([]);
+      }
+    };
+    // }, [users, owners]);
+  }, []);
 
   return (
     <View style={styles.container}>
