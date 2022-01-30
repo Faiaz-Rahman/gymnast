@@ -18,6 +18,8 @@ import {useNavigationState} from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+
 import Octicons from 'react-native-vector-icons/Octicons';
 import Card from '../components/Card';
 
@@ -246,6 +248,11 @@ export default function Home({navigation}) {
                     </Text>
                   </View>
                 </ScrollView>
+                <TouchableOpacity
+                  style={styles.closePicker}
+                  onPress={() => setShowDetails(false)}>
+                  <AntDesign name={'closecircle'} size={40} color={'white'} />
+                </TouchableOpacity>
               </View>
             </Modal>
           )}
@@ -398,5 +405,16 @@ const styles = StyleSheet.create({
     color: '#2F4F4F',
     fontWeight: '800',
     letterSpacing: 2,
+  },
+  closePicker: {
+    height: 50,
+    width: 50,
+    backgroundColor: COLORS.black,
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    borderRadius: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
