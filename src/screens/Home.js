@@ -313,7 +313,7 @@ const styles = StyleSheet.create({
     marginLeft: DIM.width * 0.05,
   },
   headerTitleContainer: {
-    width: '85%',
+    width: '90%',
     height: '100%',
     borderRadius: 100,
     backgroundColor: COLORS.lemon,

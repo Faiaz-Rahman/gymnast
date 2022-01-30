@@ -25,9 +25,9 @@ export default function ({
           style={styles.inAppIcon}
         />
       </View>
-      <View style={styles.iconContainer}>
+      {/* <View style={styles.iconContainer}>
         <Fontisto name={iconName} size={25} color={COLORS.primary} />
-      </View>
+      </View> */}
     </TouchableOpacity>
   );
 }
@@ -35,7 +35,7 @@ export default function ({
 const styles = StyleSheet.create({
   container: {
     height: DIM.height * 0.1,
-    width: DIM.width * 0.82,
+    width: DIM.width * 0.76,
     borderRadius: 40,
     backgroundColor: COLORS.lemon,
     flexDirection: 'row',
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   buttonTextContainer: {
     backgroundColor: COLORS.primary,
     height: '100%',
-    width: '80%',
+    width: '91%',
     borderRadius: 40,
     justifyContent: 'center',
     alignItems: 'center',
